@@ -1,0 +1,34 @@
+---
+title: "Spiders"
+author: "RME"
+date: "07/12/2021"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+library(skimr)
+library(hablar)
+library(janitor)
+theme_set(theme_light())
+```
+
+```{r}
+spiders = readxl::read_xlsx('spiders.csv.xlsx')
+
+spiders %>% head()
+spiders %>% skim()
+
+
+clean = spiders %>% 
+  clean_names() %>% 
+  convert(fct(
+    family
+  ))
+
+clean %>% skim()
+  
+
+clean 
+```
+

@@ -1,0 +1,66 @@
+---
+title: "Cricket"
+author: "RME"
+date: "02/12/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(tidytuesdayR)
+library(lubridate)
+library(skimr)
+library(janitor)
+library(hablar)
+library(forcats)
+
+theme_set(theme_light())
+```
+
+
+
+
+```{r}
+matches <- read.csv('matches.csv')
+matches %>% glimpse()
+```
+
+
+### Cleaning Data 
+```{r}
+clean <- matches %>%
+  clean_names() %>% 
+  mutate(match_date = mdy(match_date)) %>% 
+  convert(fct(team1,
+              team2,
+              team1_away_or_home,
+              team2_home_away,
+              winner,
+              margin_type,
+              time_of_day,
+              series,
+              player_of_match,
+              player_of_match_team,
+              venue,
+              toss,
+              toss_decision,
+              ground,
+              ground_city,
+              ground_country))
+  
+
+clean %>% skim()
+
+
+clean %>% 
+  ggplot(aes(x=score_team1,y=margin)) + geom_point()
+
+
+
+
+```
+
