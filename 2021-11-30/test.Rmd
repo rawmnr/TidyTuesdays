@@ -8,8 +8,80 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+### Libraries 
 
 ```{r}
-matches <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-11-30/matches.csv')
+library(tidyverse)
+library(janitor)
+library(hablar)
+library(skimr)
+library(lubridate)
+library(forcats)
 ```
+
+
+### Importing Data 
+
+```{r}
+matches <- read_csv('matches.csv')
+```
+
+### Cleaning file 
+
+```{r}
+matches %>% skim()
+```
+
+Factoring data
+
+Extract data from ball remaining 
+```{r}
+clean <- matches %>% 
+  clean_names() %>% 
+  convert(fct(team1,
+              team2,
+              team1_away_or_home,
+              team2_home_away,
+              player_of_match,
+              player_of_match_team,
+              winner,
+              margin_type,
+              time_of_day,
+              series,
+              venue,
+              toss,
+              toss_decision,
+              ground,
+              ground_city,
+              ground_country)) %>% 
+  mutate(match_date = mdy(match_date))
+
+clean %>% glimpse()
+clean %>% skim()
+
+
+clean$ball_remaining
+```
+
+### EDA
+Wins 
+```{r}
+clean %>% 
+  group_by(winner) %>% 
+  count() %>% 
+  fct_lump(winner, n=10)
+  ggplot(aes(x = winner, y = n)) + geom_bar(stat = 'identity')
+
+teamwins$winner = factor(teamwins$winner)
+
+fct_reorder(teamwins$winner,teamwins$n,max)
+```
+
+
+
+
+
+
+
+
 
