@@ -29,6 +29,24 @@ clean = spiders %>%
 clean %>% skim()
   
 
-clean 
+clean %>% 
+  group_by(year) %>% 
+  count() %>% 
+  ggplot(aes(x=year,y=n)) + geom_bar(stat='identity',width = 0.8) +
+  labs(title = 'Species reported per year',x='Year',y='Reported Species')
+```
+
+lets look at countries 
+
+```{r}
+clean %>% 
+  separate(distribution,c('c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11','c12','c13','c14','c15'),sep = ',') %>% pivot_longer(cols = starts_with("c"),names_to = 'reg_num',values_to = 'regions', values_drop_na = TRUE) %>% mutate(regions = str_trim(regions)) %>%  convert(fct(regions)) %>% 
+  group_by(regions) %>% 
+  count() %>% 
+  arrange(desc(n),regions) %>%
+  filter(n >500) %>% 
+  ggplot(aes(x=fct_reorder(regions,n,.desc = TRUE),y=n)) + geom_bar(stat = 'identity') + 
+  labs(x = 'Region',y = 'Number of species', title = 'Number of species discovered by region') + coord_flip()
+
 ```
 
