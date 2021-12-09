@@ -5,7 +5,7 @@ date: "07/12/2021"
 output: github_document
 ---
 
-```{r}
+```{r include=FALSE}
 library(tidyverse)
 library(skimr)
 library(hablar)
@@ -13,7 +13,7 @@ library(janitor)
 theme_set(theme_light())
 ```
 
-```{r}
+```{r echo=FALSE}
 spiders = readxl::read_xlsx('spiders.csv.xlsx')
 
 spiders %>% head()
@@ -38,7 +38,7 @@ clean %>%
 
 lets look at countries 
 
-```{r}
+```{r echo=FALSE}
 clean %>% 
   separate(distribution,c('c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11','c12','c13','c14','c15'),sep = ',') %>% pivot_longer(cols = starts_with("c"),names_to = 'reg_num',values_to = 'regions', values_drop_na = TRUE) %>% mutate(regions = str_trim(regions)) %>%  convert(fct(regions)) %>% 
   group_by(regions) %>% 
